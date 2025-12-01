@@ -406,9 +406,18 @@ h1 {
 
 
 
+.popup-1
+{
+  background-color: rgb(255, 0, 0);
+}
 
+.error {
+    border: 2px solid red !important;
+}
 
-
-
-
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+}
 
