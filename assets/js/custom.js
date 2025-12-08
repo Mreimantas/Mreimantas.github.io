@@ -1,3 +1,16 @@
+// =========================================================
+// CARD DATASET – at least 6 unique icons
+// =========================================================
+const icons = ["🍎","🚗","⭐","🐶","🎮","🎲","⚽","🏀","❄️","🔥","👺","👾"];
+
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let moves = 0;
+let matches = 0;
+let timer = 0;
+let timerInterval = null;
+let gameStarted = false;
 
 const formContainer = document.querySelector(".php-email-form");
 
@@ -255,3 +268,183 @@ function validateForm() {
         submitBtn.style.opacity = "0.5";
     }
 }
+
+
+
+// =========================================================
+// LOAD BEST SCORES FROM localStorage
+// =========================================================
+function loadBestScores() {
+    document.getElementById("best-easy").textContent = localStorage.getItem("best_easy") ?? "–";
+    document.getElementById("best-hard").textContent = localStorage.getItem("best_hard") ?? "–";
+}
+loadBestScores();
+
+// =========================================================
+// START TIMER
+// =========================================================
+function startTimer() {
+    if (gameStarted) return;
+    gameStarted = true;
+
+    timerInterval = setInterval(() => {
+        timer++;
+        document.getElementById("timer").textContent = timer;
+    }, 1000);
+}
+
+// =========================================================
+// RESET GAME STATE
+// =========================================================
+function resetStats() {
+    moves = 0;
+    matches = 0;
+    timer = 0;
+    gameStarted = false;
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    document.getElementById("moves").textContent = moves;
+    document.getElementById("matches").textContent = matches;
+    document.getElementById("timer").textContent = timer;
+    
+    const winMsg = document.getElementById("win-message");
+    winMsg.textContent = "";
+    winMsg.style.display = "none";
+}
+
+// =========================================================
+// CREATE GAME BOARD
+// =========================================================
+function createBoard() {
+
+    resetStats();
+
+    const board = document.getElementById("game-board");
+    board.innerHTML = "";
+
+    const diff = document.getElementById("difficulty").value;
+
+    let rows, cols, totalCards;
+
+    if (diff === "easy") {
+        rows = 3;
+        cols = 4;
+        totalCards = 12;
+    } else {
+        // Hard mode: 4 rows × 6 columns = 24 cards
+        rows = 4;
+        cols = 6;
+        totalCards = 24;
+    }
+
+    board.style.gridTemplateColumns = `repeat(${cols}, 90px)`;
+
+    const needed = totalCards / 2;
+    const selectedIcons = icons.slice(0, needed);
+
+    const cardsData = [...selectedIcons, ...selectedIcons]
+        .sort(() => Math.random() - 0.5);
+
+    cardsData.forEach(icon => {
+        const div = document.createElement("div");
+        div.classList.add("card");
+        div.textContent = icon;
+        div.dataset.icon = icon;
+
+        div.addEventListener("click", () => flipCard(div));
+        board.appendChild(div);
+    });
+}
+
+// =========================================================
+// FLIP CARD
+// =========================================================
+function flipCard(card) {
+    if (lockBoard || card.classList.contains("flipped") || card.classList.contains("matched"))
+        return;
+
+    startTimer();
+
+    card.classList.add("flipped");
+
+    if (!firstCard) {
+        firstCard = card;
+        return;
+    }
+
+    secondCard = card;
+    moves++;
+    document.getElementById("moves").textContent = moves;
+
+    checkMatch();
+}
+
+// =========================================================
+// CHECK MATCH
+// =========================================================
+function checkMatch() {
+    if (firstCard.dataset.icon === secondCard.dataset.icon) {
+
+        firstCard.classList.add("matched");
+        secondCard.classList.add("matched");
+
+        matches++;
+        document.getElementById("matches").textContent = matches;
+
+        firstCard = null;
+        secondCard = null;
+
+        checkWin();
+    } else {
+        lockBoard = true;
+        setTimeout(() => {
+            firstCard.classList.remove("flipped");
+            secondCard.classList.remove("flipped");
+
+            firstCard = null;
+            secondCard = null;
+            lockBoard = false;
+        }, 1000);
+    }
+}
+
+// =========================================================
+// CHECK WIN
+// =========================================================
+function checkWin() {
+    const diff = document.getElementById("difficulty").value;
+    const totalPairs = diff === "easy" ? 6 : 12;
+
+    if (matches === totalPairs) {
+        clearInterval(timerInterval);
+
+        const winMsg = document.getElementById("win-message");
+        winMsg.textContent = `🎉 Sveikiname! Užbaigėte žaidimą per ${timer} sekundes ir ${moves} ėjimus!`;
+        winMsg.style.display = "block";
+
+        saveBestResult();
+    }
+}
+
+// =========================================================
+// SAVE BEST RESULT
+// =========================================================
+function saveBestResult() {
+    const diff = document.getElementById("difficulty").value;
+    const key = diff === "easy" ? "best_easy" : "best_hard";
+
+    const best = localStorage.getItem(key);
+
+    if (best === null || moves < best) {
+        localStorage.setItem(key, moves);
+        loadBestScores();
+    }
+}
+
+// =========================================================
+// BUTTON EVENTS
+// =========================================================
+document.getElementById("startBtn").addEventListener("click", createBoard);
+document.getElementById("difficulty").addEventListener("change", createBoard);
