@@ -69,6 +69,7 @@
             </ul>
           </li>
           <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
+          <li><a href="#game"><i class="bi bi-controller navicon"></i> Žaidimas</a></li>
         </ul>
       </nav>
 
@@ -1094,6 +1095,68 @@
       </div>
 
     </section><!-- /Contact Section -->
+
+    <!-- Mano Žaidimas Section -->
+    <section id="game" class="game section light-background">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Atminties Žaidimas</h2>
+        <p>Išbandykite savo atminties gebėjimus! Suraskite visas vienodas korteles kuo mažiau ėjimų ir per trumpiausią laiką.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            
+            <div class="game-controls text-center mb-4">
+              <label for="difficulty" class="form-label"><strong>Pasirinkite sunkumo lygį:</strong></label>
+              <select id="difficulty" class="form-select d-inline-block w-auto mx-2">
+                <option value="easy">Lengvas (4×3 - 12 kortelių)</option>
+                <option value="hard">Sunkus (6×4 - 24 kortelės)</option>
+              </select>
+              <button id="startBtn" class="btn btn-primary ms-2">Pradėti žaidimą</button>
+            </div>
+
+            <div id="game-area" class="row">
+              <div class="col-lg-9 col-md-12">
+                <div id="game-board" class="mb-4"></div>
+              </div>
+
+              <div class="col-lg-3 col-md-12">
+                <div id="stats" class="stats-panel">
+                  <h5 class="mb-3">📊 Statistika</h5>
+                  <div class="stat-item-box mb-3">
+                    <div class="stat-label">Ėjimai</div>
+                    <div class="stat-value"><span id="moves" class="badge bg-primary">0</span></div>
+                  </div>
+                  <div class="stat-item-box mb-3">
+                    <div class="stat-label">Surastos poros</div>
+                    <div class="stat-value"><span id="matches" class="badge bg-success">0</span></div>
+                  </div>
+                  <div class="stat-item-box mb-3">
+                    <div class="stat-label">Laikas</div>
+                    <div class="stat-value"><span id="timer" class="badge bg-info">0</span>s</div>
+                  </div>
+
+                  <div class="best-scores mt-4">
+                    <h5>🏆 Geriausi rezultatai</h5>
+                    <p><strong>Lengvas:</strong> <span id="best-easy" class="text-primary">–</span> ėjimai</p>
+                    <p><strong>Sunkus:</strong> <span id="best-hard" class="text-primary">–</span> ėjimai</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="win-message" class="alert alert-success text-center mt-4" style="display: none;"></div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Mano Žaidimas Section -->
 
   </main>
 
