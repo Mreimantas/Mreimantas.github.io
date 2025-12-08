@@ -421,3 +421,116 @@ h1 {
     margin-top: 4px;
 }
 
+#game-area {
+    margin-top: 20px;
+}
+
+#game-board {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.card {
+    width: 90px;
+    height: 90px;
+    background: #3498db;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+    border-radius: 8px;
+    color: transparent;
+    user-select: none;
+    transition: 0.3s;
+}
+
+.card.flipped,
+.card.matched {
+    background: #2ecc71;
+    color: black;
+    cursor: default;
+}
+
+#stats {
+    font-size: 18px;
+}
+
+#win-message {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #27ae60;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-controls {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.best-scores {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-panel {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    position: sticky;
+    top: 20px;
+}
+
+.stat-item-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.stat-value .badge {
+    font-size: 20px;
+    padding: 8px 16px;
+}
+
+@media (max-width: 991px) {
+    .stats-panel {
+        position: static;
+        margin-top: 20px;
+    }
+    
+    #game-board {
+        margin-bottom: 20px;
+    }
+}
